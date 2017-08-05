@@ -1,0 +1,7 @@
+#dir to ignore
+*.pyc
+*.swp
+_
+*.o
+*.out
+__pycache__

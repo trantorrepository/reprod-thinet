@@ -16,6 +16,8 @@ import sys
 import numpy as np
 import argparse
 
+import dataset
+
 
 class ModifiedVGG16Model(torch.nn.Module):
     def __init__(self):
@@ -52,6 +54,54 @@ class ModifiedVGG16Model(torch.nn.Module):
         return x
 
 
+class PrunningFineTuner_VGG16:
+    def __init__(self, train_path, test_path, model):
+        self.train_data_path = dataset.loader(train_path)
+        self.test_data_path  = dataset.test_loader(test_path)
+
+        self.model = model
+        self.criterion = torch.nn.CrossEntropyLoss()
+        #self.prunner = FilterPr
+        self.model.train()  #??
+
+    def test(self):
+        # eval() interprets a string as code.
+        self.model.eval()  #??
+        correct = 0
+        total   = 0
+
+        for i, (batch, label) in enumerate(self.test_data_loader):
+            batch = batch.cuda()
+            output = model(Variable(batch))
+            pred = output.data.max(1)[1]
+            correct += pred.cpu().eq(label).sum()
+            total += label.size(0)
+
+        print("Accuracy:", float(correct) / total)
+        self.model.train()
+
+    def train(self, optimizer = None, epoches = 10):
+        if optimizer == None:
+            optimizer = optim.SGD(model.classifier.parameters(), 
+                                lr = 0.0001, momentum = 0.9)
+
+        if i in range(epoches):
+            print("Epoch: ", i)
+            self.train_epoch(optimizer)
+            self.test()
+        print("Finished fine tuning...")
+
+    def train_epoch(self, optimizer = None, rank_filters = False):
+        for batch, label in self.train_data_loader:
+            self.train_batch(optimizer, batch.cuda(), label.cuda(), rank_filters)
+
+    def train_batch(self, optimizer, batch, label, rank_filters):
+        self.model.zero_grad()
+        input = Variable(batch)
+        self.criterion(self.model(input), Variable(label)).backward()
+        optimizer.step()
+
+
 
 
 def get_args():
@@ -69,6 +119,8 @@ if __name__ == "__main__":
     args = get_args()
     if args.train:
         model = ModifiedVGG16Model().cuda()
+        PrunningFineTuner_VGG16(args.train_path, args.test_path, model)
+    
 
 
 

@@ -18,10 +18,15 @@ from PIL import Image
 import glob
 import os
 
-def loader(path, batch_size=32, num_workers=4, pin_memory=True):
+# NOTE: when `pin_memory` = True, you can ONLY use CUDA devices to compute
+
+def loader(path, batch_size=32, num_workers=4, pin_memory=False):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    # http://pytorch.org/docs/master/data.html#torch.utils.data.DataLoader
     return data.DataLoader(
+    # http://pytorch.org/docs/master/torchvision/datasets.html
         datasets.ImageFolder(path,
+    # http://pytorch.org/docs/master/torchvision/transforms.html#torchvision-transforms
                              transforms.Compose([
                                  transforms.Scale(256),
                                  transforms.RandomSizedCrop(224),
@@ -34,7 +39,7 @@ def loader(path, batch_size=32, num_workers=4, pin_memory=True):
         num_workers=num_workers,
         pin_memory=pin_memory)
 
-def test_loader(path, batch_size=32, num_workers=4, pin_memory=True):
+def test_loader(path, batch_size=32, num_workers=4, pin_memory=False):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     return data.DataLoader(
         datasets.ImageFolder(path,
@@ -48,3 +53,9 @@ def test_loader(path, batch_size=32, num_workers=4, pin_memory=True):
         shuffle=False,
         num_workers=num_workers,
         pin_memory=pin_memory)
+
+
+#train_d = loader("../dataset/kaggle_train")
+#test_d  = test_loader("../dataset/kaggle_test")
+#for item in test_d:
+#    print(item)

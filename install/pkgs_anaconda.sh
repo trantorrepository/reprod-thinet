@@ -8,5 +8,5 @@
 
 
 conda install -c soumith pytorch 
-pip install opencv-python
-
+#pip install opencv-python
+conda install opencv 

@@ -21,6 +21,8 @@ import os
 # NOTE: when `pin_memory` = True, you can ONLY use CUDA devices to compute
 
 def loader(path, batch_size=32, num_workers=4, pin_memory=False):
+    if torch.cuda.is_available is True:
+        pin_memory = True
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     # http://pytorch.org/docs/master/data.html#torch.utils.data.DataLoader
     return data.DataLoader(
@@ -40,6 +42,8 @@ def loader(path, batch_size=32, num_workers=4, pin_memory=False):
         pin_memory=pin_memory)
 
 def test_loader(path, batch_size=32, num_workers=4, pin_memory=False):
+    if torch.cuda.is_available is True:
+        pin_memory = True
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     return data.DataLoader(
         datasets.ImageFolder(path,

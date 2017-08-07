@@ -110,8 +110,6 @@ class PrunningFineTuner_VGG16:
         optimizer.step()
 
 
-
-
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--train", dest="train", action="store_true")
@@ -125,10 +123,10 @@ def get_args():
 
 if __name__ == "__main__":
     args = get_args()
-    os.environ["CUDA_VISIBLE_DEVICES"] = 0
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
     if args.train:
-        model = ModifiedVGG16Model()
+        model = ModifiedVGG16Model().cuda()
     
     fine_tuner = PrunningFineTuner_VGG16(args.train_path, args.test_path, model)
 

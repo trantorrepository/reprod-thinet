@@ -58,7 +58,7 @@ As a training set we will use 1000 images of cats, and 1000 images of dogs, from
 
 #### Step one - train a large network
 
-We will take VGG16, drop the fully connected layers, and add three new fully connected layers. We will freeze the convolutional layers, and retrain only the new fully connected layers. In PyTorch, the new layers look like this:
+We will take VGG16, drop the fully connected layers, and add three new fully connected layers. **We will freeze the convolutional layers, and retrain only the new fully connected layers.** In PyTorch, the new layers look like this:
 
 ```
 self.classifier = nn.Sequential(

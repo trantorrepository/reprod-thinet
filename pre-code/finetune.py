@@ -17,6 +17,7 @@ import cv2
 import sys
 import numpy as np
 import argparse
+import os
 
 import dataset
 
@@ -124,6 +125,7 @@ def get_args():
 
 if __name__ == "__main__":
     args = get_args()
+    os.environ["CUDA_VISIBLE_DEVICES"] = 0
 
     if args.train:
         model = ModifiedVGG16Model()

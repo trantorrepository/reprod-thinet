@@ -68,7 +68,8 @@ class PrunningFineTuner_VGG16:
         self.model.train()  #??
 
     def test(self):
-        self.model.eval()  #??
+        # https://discuss.pytorch.org/t/eval-async-feature-extraction-wrt-transfer-learning-tutorial/2164
+        self.model.eval()
         correct = 0
         total   = 0
 

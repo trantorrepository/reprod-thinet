@@ -30,6 +30,8 @@ def loader(path, batch_size=32, num_workers=4, pin_memory=False):
         datasets.ImageFolder(path,
     # http://pytorch.org/docs/master/torchvision/transforms.html#torchvision-transforms
                              transforms.Compose([
+    # You should notice that these transforms are meaning to data argumentation
+    # https://discuss.pytorch.org/t/data-augmentation-for-limited-data/635
                                  transforms.Scale(256),
                                  transforms.RandomSizedCrop(224),
                                  transforms.RandomHorizontalFlip(),
